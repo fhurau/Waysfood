@@ -20,6 +20,24 @@ const EditProfile = () => {
     const handleShow = () => setShow(true);
     const navigate = useNavigate ();
 
+    function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        }
+      }
+    
+      const [mapLong, setMapLong] = useState();
+      const [mapLat, setMapLat] = useState();
+    
+      function showPosition(position) {
+        const long = position.coords.longitude;
+        const lat = position.coords.latitude;
+        setMapLong(long);
+        setMapLat(lat);
+      }
+    
+      const mapLongLat = `${mapLong}, ${mapLat}`;
+
     const [form, setForm] = useState({
         image: "",
         name: "",
@@ -70,7 +88,7 @@ const EditProfile = () => {
                 formData.set("name", form.name);
                 formData.set("email", form.email);
                 formData.set("phone", form.phone);
-                formData.set("location", form.location);
+                formData.set("location", mapLongLat);
     
             const response = await API.patch("/user/" + user.id , formData);
     
@@ -81,6 +99,7 @@ const EditProfile = () => {
             console.log(error);
         }
     };
+    console.log(mapLongLat);
 
     return (
     <div>
@@ -97,12 +116,21 @@ const EditProfile = () => {
                 <input type="email" className='w-100 labeladd mb-2' placeholder='   Email' name='email' onChange={handleChange}/>
                 <input type="number" className='w-100 labeladd mt-2' placeholder='   Phone' name='phone' onChange={handleChange}/>
                 <div className='d-flex my-3'>
-                    <input type="text" className='w-75 me-3 labeladd' placeholder='   Adress' name='location' onChange={handleChange}/>
+                    <input type="text" className='w-75 me-3 labeladd' placeholder='   Adress' name='location' onChange={handleChange} value={mapLongLat}/>
                     <div class="input-group mb-3 w-25">
-                        <button class=" labeladd rounded-end labeledit fw-bolder" type="button" onClick={handleShow}>Select On Map <img src={mapkecil} alt="" /></button>
+                        <button class=" labeladd rounded-end labeledit fw-bolder" type="button" onClick={() => { handleShow(); getLocation();}}>Select On Map <img src={mapkecil} alt="" /></button>
                         <Modal show={show} onHide={() => setShow(false)} size="xl" className=' d-flex justify-content-center align-items-center' backdrop="static">
                             <Modal.Body>
-                            <img src={maps} alt="" className='w-100 p-2'/>
+                            <iframe
+            width="100%"
+            height="400px"
+            id="gmap_canvas"
+            src="https://maps.google.com/maps?q=Dumbways%20&t=&z=17&ie=UTF8&iwloc=&output=embed"
+            frameBorder="0"
+            scrolling="no"
+            marginHeight="0"
+            marginWidth="0"
+            title="myFrame"></iframe>
                             </Modal.Body>
                         </Modal>
                     </div>

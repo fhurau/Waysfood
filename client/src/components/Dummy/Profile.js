@@ -4,6 +4,9 @@ import profil from "../Dummy/profil.png"
 import Icon from "../Icon.png"
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
+import { API } from '../../config/api';
+import { useQuery} from "react-query";
+
 
 
 
@@ -12,7 +15,15 @@ const Profile = () => {
 
   const [state, dispatch] = useContext(UserContext)
 
-  console.log(state);
+  let { data: transactions } = useQuery("transactionssCache", async () => {
+    const response = await API.get("/transaction");
+    const response2 = response.data.data.filter(
+      (p) => p.buyer_id == state.user.id
+    );
+    return response2;
+  });
+
+  
 
   return (
     <div className='margintop'>
@@ -23,7 +34,7 @@ const Profile = () => {
                 <div className='d-flex'>
                     <div className='me-3'>
                         <div>
-                        <img src={profil} alt="" />
+                        <img src={`http://localhost:5000/uploads/${state.user.image}`} alt="" />
                         </div>
                         <button className='mt-3 tomboledit' onClick={()=> navigate('/edit-profiles')}>Edit Profile</button>
                     </div>
@@ -45,11 +56,12 @@ const Profile = () => {
             </div>
             <div className='w-50'>
                 <h1 className='fontgede'>History transaction</h1>
+                {transactions?.map((item) => (
                 <Container className='border d-flex'>
                     <div className='m-2 w-75'>
-                        <h5>Geprek Bensu</h5>
-                        <p><strong>Saturday</strong>, 12 March 2021</p>
-                        <p className='text-danger'>Total : Rp 45.000</p>
+                        <h5>{item.product.name}</h5>
+                        <p>{item.date}</p>
+                        <p className='text-danger'>Total : {item.price}</p>
                     </div>
                     <div className='w-25'>
                         <div>
@@ -58,6 +70,7 @@ const Profile = () => {
                         <button className='mt-3 ms-5 finish rounded'>Finished</button>
                     </div>
                 </Container>
+                ))}
             </div>
         </div>
         

@@ -7,6 +7,7 @@ import (
 	"backend/repositories"
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"strconv"
 
@@ -34,6 +35,9 @@ func (h *handlerTransaction) CreateTransaction(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	input := time.Now()
+	dateParse := input.Format("2 Jan 2006 15:04")
+
 	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
 	userId := int(userInfo["id"].(float64))
 
@@ -51,6 +55,7 @@ func (h *handlerTransaction) CreateTransaction(w http.ResponseWriter, r *http.Re
 		ProductID: request.ProductID,
 		Price:     request.Price,
 		Status:    request.Status,
+		Date:      dateParse,
 		Qty:       1,
 	}
 

@@ -44,7 +44,7 @@ let { data: products } = useQuery("adminnCache", async () => {
         <>
     <Container>
         <div className='w-100 mx-auto mt-4'>
-            <h2 className='mt-5 mb-3'>Geprek Bensu, Menus</h2>
+            <h2 className='mt-5 mb-3'>Menus</h2>
             <div className='d-flex flex-wrap gap-4'>
             {products?.map((item) => {
                 return(

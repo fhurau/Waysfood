@@ -11,6 +11,7 @@ type Transaction struct {
 	Price     int                  `json:"price" gorm:"type:int"`
 	Status    string               `json:"status"  gorm:"type:varchar(25)"`
 	Qty       int                  `json:"qty"`
+	Date      string               `json:"date"`
 	CreatedAt time.Time            `json:"-"`
 	UpdatedAt time.Time            `json:"-"`
 }
