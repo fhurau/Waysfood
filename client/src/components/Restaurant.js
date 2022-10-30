@@ -5,6 +5,8 @@ import { cards } from './Dummy/Card'
 import { useState } from 'react';
 import {  Button } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
+import { API } from '../config/api';
+import { useQuery } from 'react-query';
 
 
 
@@ -53,6 +55,15 @@ export const Restaurant = () => {
   }
 }
 
+const [state, dispatch] = useContext(UserContext)
+
+let { data: users } = useQuery("adminCache", async () => {
+  const response = await API.get("/users");
+  const userss = response.data.data.filter ((e) => e.role == "admin") 
+  return userss;
+});
+
+console.log(users);
 
   return (
     <div className='w-75 mx-auto gap-5 mt-5 mb-5'>
@@ -62,26 +73,26 @@ export const Restaurant = () => {
         <div className='d-flex justify-content-between flex-wrap mx-auto mt-5' >
           
         {dataUser.isLogin || dataUser.isLoginAdmin ?
-        <div className='d-flex justify-content-between flex-wrap mx-auto mt-5'>
+        <div className='d-flex justify-content-evenly w-100 flex-wrap mx-auto mt-5'>
 
-          {cards.map((item) => {
+          {users?.map((item) => {
             return(
-            <div class="card cursor" style={{width: "18rem"}} onClick={() => navigate("/detail-menu")}>
-            <img class="card-img-top" src={item.image} alt="Card image cap" />
+            <div class="card cursor" style={{width: "18rem"}} onClick={() => navigate(`/detail-menu/${item.id}`)}>
+            <img class="card-img-top detailfoto" src={item.image} alt="Card image cap" style={{objectFit:"cover"}} />
             <div class="card-body">
-              <h5 class="card-title d-flex justify-content-start" >{item.nama}</h5>
-              <p class="card-text d-flex justify-content-start">{item.jarak}</p>
+              <h5 class="card-title d-flex justify-content-start" >{item.name}</h5>
+              <p class="card-text d-flex justify-content-start">10 KM</p>
             </div>
           </div>
             ) 
         })} 
         </div> :
-        <div className='d-flex justify-content-between flex-wrap mx-auto mt-5'>
+        <div className='d-flex justify-content-evenly w-100 flex-wrap mx-auto mt-5'>
 
           {cards.map((item) => {
               return(
               <div class="card cursor" style={{width: "18rem"}} onClick={handleShow}>
-              <img class="card-img-top" src={item.image} alt="Card image cap" />
+              <img class="card-img-top detailfoto" src={item.image} alt="Card image cap" style={{objectFit:"cover"}}/>
               <div class="card-body">
                 <h5 class="card-title d-flex justify-content-start" >{item.nama}</h5>
                 <p class="card-text d-flex justify-content-start">{item.jarak}</p>

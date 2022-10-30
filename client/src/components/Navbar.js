@@ -234,7 +234,7 @@ function NavbarComp() {
           </div>
           <div className='d-flex justify-content-center '>
             <Button variant="primary" className="login m-4" onClick={
-              (e) => handleSubmitLogin.mutate(e)
+              (e) => {handleSubmitLogin.mutate(e) ; handleClose ()}
             } >Log In</Button>
           </div>
           <div className='d-flex justify-content-center '>
@@ -277,7 +277,7 @@ function NavbarComp() {
           </select>
           </div>
           <div className='d-flex justify-content-center '>
-          <Button variant="primary" onClick={(e) => handleSubmit.mutate(e)} className="login m-4">Register</Button>
+          <Button variant="primary" onClick={(e) => {handleSubmit.mutate(e) ; handleShow ()}} className="login m-4">Register</Button>
           </div>
           <div className='d-flex justify-content-center '>
             <p>Already have an account ? Klik <strong className='cursor' onClick={() =>{handleShow () ; handleCloseregister()}}>Here</strong></p>

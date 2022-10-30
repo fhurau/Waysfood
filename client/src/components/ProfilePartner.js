@@ -1,13 +1,16 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { Container } from 'react-bootstrap'
 import Icon from "./Icon.png"
 import profilepartner from "./Dummy/profilepartner.png"
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from "../components/context/userContext";
 
 
 
 const Profile = () => {
   const navigate = useNavigate ();
+
+  const [state, dispatch] = useContext(UserContext)
 
   return (
     <div className='margintop'>
@@ -25,15 +28,15 @@ const Profile = () => {
                     <div className='ms-3'>
                         <div>
                         <h3 className='fontkecil'>Full Name</h3>
-                        <p className='fontkecil'>Geprek Bensi</p>
+                        <p className='fontkecil'>{state.user.name}</p>
                         </div>
                         <div>
                         <h3 className='fontkecil'>Email</h3>
-                        <p className='fontkecil'>bensu@gmail.com</p>
+                        <p className='fontkecil'>{state.user.email}</p>
                         </div>
                         <div>
                         <h3 className='fontkecil'>Phone</h3>
-                        <p className='fontkecil'>083896833122</p>
+                        <p className='fontkecil'>{state.user.phone}</p>
                         </div>
                     </div>
                 </div>

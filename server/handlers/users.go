@@ -72,6 +72,10 @@ func (h *handler) FindUsers(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(response)
 	}
 
+	for i, p := range users {
+		users[i].Image = "http://localhost:5000/uploads/" + p.Image
+	}
+
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Code: "Success", Data: users}
 	json.NewEncoder(w).Encode(response)

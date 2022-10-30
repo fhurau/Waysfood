@@ -95,7 +95,7 @@ function App() {
       <NavbarComp state = {state} useState = {useState} totalItems={totalItems}/>
       <Routes>
         <Route exact path="/" element={<Landing />} />
-        <Route exact path="/detail-menu" element={<Detail addItem={addItem}/>} />
+        <Route exact path="/detail-menu/:id" element={<Detail addItem={addItem}/>} />
         <Route exact path="/orders" element={<Order addLess={updateItemQuantity} cartTotal={cartTotal} totalItems={totalItems} items={items} empty={isEmpty} removeItem={removeItem}/>} />
         <Route exact path="/income-transactions" element={<IncomeTransactions />} />
         <Route exact path="/edit-profiles" element={<EditProfile />} />

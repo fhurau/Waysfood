@@ -6,6 +6,8 @@ const AddProducts = () => {
     <div>
         <AddProduct />
     </div>
+
+    
   )
 }
 

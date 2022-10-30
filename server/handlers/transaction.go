@@ -11,6 +11,7 @@ import (
 	"strconv"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/gorilla/mux"
 )
 
@@ -33,6 +34,9 @@ func (h *handlerTransaction) CreateTransaction(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
+	userId := int(userInfo["id"].(float64))
+
 	validation := validator.New()
 	err := validation.Struct(request)
 	if err != nil {
@@ -43,10 +47,11 @@ func (h *handlerTransaction) CreateTransaction(w http.ResponseWriter, r *http.Re
 	}
 
 	transaction := models.Transaction{
-		UserID:    request.UserID,
+		UserID:    userId,
 		ProductID: request.ProductID,
 		Price:     request.Price,
 		Status:    request.Status,
+		Qty:       1,
 	}
 
 	data, err := h.TransactionRepository.CreateTransaction(transaction)
